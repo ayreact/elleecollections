@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Ellee Collections - Search</title>
+<!-- Google Fonts for Luxury Boutique Aesthetics -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              emerald: '#064e3b',
+              'emerald-dark': '#043427',
+              'emerald-light': '#0f766e',
+              gold: '#c5a059',
+              'gold-light': '#dfc38d',
+              cream: '#faf8f5',
+              surface: '#f5f0eb',
+              border: '#e7e0d8',
+              accent: '#d4af37'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif']
+          },
+          boxShadow: {
+            'luxury': '0 8px 30px rgba(0, 0, 0, 0.04)',
+            'subtle': '0 2px 8px rgba(6, 78, 59, 0.04)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Luxury Stylesheets -->
+<style data-purpose="base-styling">
+    body {
+      background-color: #f1ede8;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #e7e0d8;
+      border-radius: 4px;
+    }
+  </style>
+<style data-purpose="animations">
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .cursor-blink {
+      display: inline-block;
+      width: 1.5px;
+      height: 1.15em;
+      background-color: #064e3b;
+      vertical-align: middle;
+      animation: blink 1s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<!-- END: Custom Luxury Stylesheets -->
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 md:p-6 text-stone-800">
+<!-- BEGIN: Mobile Device Frame Simulator (iPhone ~390px) -->
+<div class="w-full max-w-[400px] min-h-screen md:min-h-[844px] md:h-[844px] bg-[#faf8f5] md:rounded-[44px] shadow-2xl overflow-hidden flex flex-col relative border-0 md:border-[7px] md:border-stone-800" data-purpose="mobile-frame">
+<!-- BEGIN: iOS Status Bar -->
+<aside class="w-full pt-3 pb-1 px-7 flex justify-between items-center bg-[#faf8f5] z-30 select-none" data-purpose="ios-status-bar">
+<span class="text-xs font-semibold tracking-tight text-stone-900">9:41</span>
+<!-- Dynamic Island / Speaker Pill notch placeholder for high-fidelity -->
+<div class="w-24 h-4 bg-stone-900 rounded-full hidden md:block"></div>
+<div class="flex items-center space-x-1.5 text-stone-900">
+<!-- Cellular Signal -->
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 24 24">
+<path d="M12 3c-4.97 0-9 4.03-9 9v7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-7c0-4.97-4.03-9-9-9zm7 15H5v-6c0-3.86 3.14-7 7-7s7 3.14 7 7v6z"></path>
+<circle cx="6" cy="17" r="1.5"></circle>
+<circle cx="10" cy="17" r="1.5"></circle>
+<circle cx="14" cy="17" r="1.5"></circle>
+<circle cx="18" cy="17" r="1.5"></circle>
+</svg>
+<!-- Wifi Icon -->
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 24 24">
+<path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.5 0 6.69 1.4 9.04 3.68L12 19.34 2.96 11.18C5.31 8.9 8.5 7.5 12 7.5z"></path>
+</svg>
+<!-- Battery Icon -->
+<div class="w-5 h-2.5 border border-stone-800 rounded-sm p-0.5 flex items-center">
+<div class="h-full w-3.5 bg-stone-900 rounded-2xs"></div>
+</div>
+</div>
+</aside>
+<!-- END: iOS Status Bar -->
+<!-- BEGIN: Top Sticky Navigation & Luxury Search Bar -->
+<header class="sticky top-0 bg-[#faf8f5]/95 backdrop-blur-md px-4 pt-2 pb-3 border-b border-brand-border/60 z-20" data-purpose="search-header">
+<div class="flex items-center gap-2.5">
+<!-- Back Button -->
+<button aria-label="Go Back" class="w-9 h-9 rounded-full bg-brand-surface border border-brand-border/80 flex items-center justify-center text-stone-700 hover:bg-stone-100 active:scale-95 transition-all">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 18 9 12 15 6"></polyline>
+</svg>
+</button>
+<!-- Search Input Field Container -->
+<div class="relative flex-1">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-emerald">
+<svg class="w-4 h-4 text-brand-emerald stroke-[2.2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18.5a7.5 7.5 0 006.15-1.85z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Simulated active input showing "Emerald" with luxury blinking cursor -->
+<div class="w-full bg-white border border-brand-emerald/40 ring-2 ring-brand-emerald/10 pl-9 pr-9 py-2 rounded-full text-xs font-medium text-stone-900 flex items-center h-10 shadow-sm transition-all">
+<span>Emerald</span><span class="cursor-blink ml-0.5"></span>
+</div>
+<!-- Clear Query Button (X) -->
+<button aria-label="Clear Search Input" class="absolute inset-y-0 right-0 pr-2.5 flex items-center">
+<span class="w-4 h-4 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center hover:bg-stone-300 active:scale-90 transition">
+<svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</span>
+</button>
+</div>
+<!-- Cancel / Close Action -->
+<button class="text-xs font-semibold text-brand-emerald px-1.5 py-1 hover:opacity-80 transition tracking-wide">
+          Cancel
+        </button>
+</div>
+<!-- Quick Category Pills / Suggestion Bar -->
+<nav class="flex items-center gap-1.5 overflow-x-auto pt-3 pb-1 hide-scrollbar -mx-4 px-4" data-purpose="trending-searches">
+<span class="text-[10px] uppercase font-semibold text-stone-400 tracking-wider whitespace-nowrap mr-0.5">Quick:</span>
+<button class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] bg-brand-emerald text-white font-medium shadow-xs whitespace-nowrap">
+          Emerald Velvet Box
+        </button>
+<button class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] bg-brand-surface border border-brand-border text-stone-600 font-medium hover:border-brand-emerald hover:text-brand-emerald transition whitespace-nowrap">
+          Solitaire Ring
+        </button>
+<button class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] bg-brand-surface border border-brand-border text-stone-600 font-medium hover:border-brand-emerald hover:text-brand-emerald transition whitespace-nowrap">
+          Silk Scarf
+        </button>
+<button class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] bg-brand-surface border border-brand-border text-stone-600 font-medium hover:border-brand-emerald hover:text-brand-emerald transition whitespace-nowrap">
+          Baroque Pearls
+        </button>
+<button class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] bg-brand-surface border border-brand-border text-stone-600 font-medium hover:border-brand-emerald hover:text-brand-emerald transition whitespace-nowrap">
+          Gold Vermeil
+        </button>
+</nav>
+</header>
+<!-- END: Top Sticky Navigation & Luxury Search Bar -->
+<!-- BEGIN: Main Scrollable Content Area -->
+<main class="flex-1 overflow-y-auto px-4 py-3 space-y-4">
+<!-- BEGIN: Results Metadata Header -->
+<section class="flex items-baseline justify-between pt-1" data-purpose="results-header">
+<div>
+<h2 class="font-serif text-lg font-semibold text-stone-900 tracking-tight">Live Results</h2>
+<p class="text-[11px] text-stone-500">Showing 3 handcrafted artisan matches</p>
+</div>
+<span class="text-[10px] font-semibold text-brand-emerald tracking-wide bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/50">
+          Query: "Emerald"
+        </span>
+</section>
+<!-- END: Results Metadata Header -->
+<!-- BEGIN: Product Result Cards List -->
+<section class="space-y-3" data-purpose="product-results-list">
+<!-- Product Card 1: Emerald Velvet Box (Featured Primary Match) -->
+<article class="bg-white rounded-2xl p-2.5 border border-brand-border/70 shadow-sm hover:shadow-md transition-all flex gap-3 relative overflow-hidden group" data-purpose="product-card">
+<!-- Left: Thumbnail with Bestseller Badge -->
+<div class="relative w-24 h-24 rounded-xl overflow-hidden bg-brand-surface flex-shrink-0 border border-brand-border/40">
+<img alt="Luxe Emerald Velvet Keepsake Box" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1Wca0r_BvLqsAsaj1fhlnq_Iab46YZvTIEqHfng6BQRCmz6JFNwZPwsPiGQUuFhYMYZPQgdwrM2baYvUlG7ph-rIcehU00v3Qa52e5EIBICJys6RO0aCsBi_Nxmwf67u_ykLh5GAlhzRbtLaI2i9k_eL88yd8tYRB_kxQdq8HIvLIusKWfubpoxnJfkvhNpTwAAsoOpwFyVqK-ApJQ9jEfcpXn7KwL7gGnj_-E6ry2T22sAy_Z7j8zA"/>
+<span class="absolute top-1.5 left-1.5 bg-amber-100/90 text-amber-800 text-[9px] font-semibold px-1.5 py-0.5 rounded shadow-xs backdrop-blur-xs">
+              Bestseller
+            </span>
+</div>
+<!-- Right: Details -->
+<div class="flex-1 flex flex-col justify-between py-0.5 min-w-0">
+<div>
+<div class="flex items-center justify-between gap-1">
+<span class="text-[9px] font-semibold tracking-wider uppercase text-brand-emerald-light">Curated Gift Box</span>
+<span class="inline-flex items-center text-[9px] text-emerald-700 font-medium bg-emerald-50 px-1.5 py-0.2 rounded-full">
+<span class="w-1 h-1 rounded-full bg-emerald-600 mr-1"></span>In Stock
+                </span>
+</div>
+<h3 class="font-serif font-medium text-stone-900 text-xs leading-snug truncate mt-0.5" title="Luxe Emerald Velvet Keepsake Box with Gold Clasp">
+                Luxe Emerald Velvet Keepsake Box with Gold Clasp
+              </h3>
+</div>
+<!-- Price and Quick Add -->
+<div class="flex items-center justify-between pt-1 border-t border-stone-100">
+<div>
+<span class="font-serif font-bold text-stone-900 text-xs tracking-tight">₦28,500<span class="text-[10px] font-normal text-stone-500">.00</span></span>
+<span class="text-[9px] text-stone-400 line-through ml-1 font-sans">₦32,000</span>
+</div>
+<button class="bg-brand-emerald text-white text-[10px] font-medium px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all shadow-xs hover:bg-brand-emerald-dark">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Add</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Product Card 2: Rose Gold Solitaire Ring -->
+<article class="bg-white rounded-2xl p-2.5 border border-brand-border/70 shadow-sm hover:shadow-md transition-all flex gap-3 relative overflow-hidden group" data-purpose="product-card">
+<!-- Left: Thumbnail -->
+<div class="relative w-24 h-24 rounded-xl overflow-hidden bg-brand-surface flex-shrink-0 border border-brand-border/40">
+<img alt="Rose Gold Solitaire Ring" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1VWzz8IyYHa5rep8XijQB6Ljr3t2Vy6hM6tYBL-aGFrm4vp1R7V-vBRwbGxxXyj26id_T_TCvlJuQKqH2y9MAPUvl8zrZ6IdPXUYohkzN0ER4CrZ0fD4URYVvHda6CaKLZYxHx9DuTlTdPx0B4-WlkWvX_Mv3nd3WGY5Wp1Hyzu5W1Qq2cIaNQ28JqZcScm2d1D5TeE1ezdjD_CT4RBQry1xiuB9w3tTlf5Ki0pbL7vwQKDpju0Dvg"/>
+</div>
+<!-- Right: Details -->
+<div class="flex-1 flex flex-col justify-between py-0.5 min-w-0">
+<div>
+<div class="flex items-center justify-between gap-1">
+<span class="text-[9px] font-semibold tracking-wider uppercase text-stone-500">Fine Jewelry</span>
+<span class="inline-flex items-center text-[9px] text-emerald-700 font-medium bg-emerald-50 px-1.5 py-0.2 rounded-full">
+<span class="w-1 h-1 rounded-full bg-emerald-600 mr-1"></span>In Stock
+                </span>
+</div>
+<h3 class="font-serif font-medium text-stone-900 text-xs leading-snug truncate mt-0.5" title="Rose Gold Solitaire Ring">
+                Rose Gold Solitaire Ring
+              </h3>
+<p class="text-[10px] text-stone-500 line-clamp-1 mt-0.5">18k rose gold band with brilliant round cut</p>
+</div>
+<!-- Price and Quick Add -->
+<div class="flex items-center justify-between pt-1 border-t border-stone-100">
+<span class="font-serif font-bold text-stone-900 text-xs tracking-tight">₦15,000<span class="text-[10px] font-normal text-stone-500">.00</span></span>
+<button class="bg-brand-emerald text-white text-[10px] font-medium px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all shadow-xs hover:bg-brand-emerald-dark">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Add</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Product Card 3: Pure Mulberry Silk Head Scarf -->
+<article class="bg-white rounded-2xl p-2.5 border border-brand-border/70 shadow-sm hover:shadow-md transition-all flex gap-3 relative overflow-hidden group" data-purpose="product-card">
+<!-- Left: Thumbnail -->
+<div class="relative w-24 h-24 rounded-xl overflow-hidden bg-brand-surface flex-shrink-0 border border-brand-border/40">
+<img alt="Pure Mulberry Silk Head Scarf - Botanica Edition" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk1FYwsyoSuMe0LfismdcRwU0V2zqS-fBiddv9vxbyMQunPG62_R6UEsdolw1ji0IUyZ1LtkoTdPk2k0KD8cejiIRUDBBHuAlK_j5gYi_eM4ZHc0tIvArDVrWvrGsFWqofHcrxUxQm5CqmiIFRceEIu40_4WlJVsLrT1G2K_iAMNZzYcnzTv8SS48lRZ1RHW4O206QyN6-7cqzC67KTmLwl44t84OPdUXcEtq9PAWg4p7bxlgtbg"/>
+</div>
+<!-- Right: Details -->
+<div class="flex-1 flex flex-col justify-between py-0.5 min-w-0">
+<div>
+<div class="flex items-center justify-between gap-1">
+<span class="text-[9px] font-semibold tracking-wider uppercase text-stone-500">Silk Adornments</span>
+<span class="inline-flex items-center text-[9px] text-emerald-700 font-medium bg-emerald-50 px-1.5 py-0.2 rounded-full">
+<span class="w-1 h-1 rounded-full bg-emerald-600 mr-1"></span>In Stock
+                </span>
+</div>
+<h3 class="font-serif font-medium text-stone-900 text-xs leading-snug truncate mt-0.5" title="Pure Mulberry Silk Head Scarf - Botanica Edition">
+                Pure Mulberry Silk Head Scarf - Botanica Edition
+              </h3>
+<p class="text-[10px] text-stone-500 line-clamp-1 mt-0.5">100% natural silk twill with rolled edges</p>
+</div>
+<!-- Price and Quick Add -->
+<div class="flex items-center justify-between pt-1 border-t border-stone-100">
+<span class="font-serif font-bold text-stone-900 text-xs tracking-tight">₦9,500<span class="text-[10px] font-normal text-stone-500">.00</span></span>
+<button class="bg-brand-emerald text-white text-[10px] font-medium px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all shadow-xs hover:bg-brand-emerald-dark">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Add</span>
+</button>
+</div>
+</div>
+</article>
+</section>
+<!-- END: Product Result Cards List -->
+<!-- BEGIN: Atelier Concierge WhatsApp Banner -->
+<aside class="mt-4 rounded-2xl bg-gradient-to-br from-[#f8f5ee] to-[#ede5d8] border border-brand-gold/30 p-3.5 relative overflow-hidden shadow-xs" data-purpose="concierge-banner">
+<!-- Subtle luxury decorative corner ornament -->
+<div class="absolute -right-3 -top-3 w-16 h-16 bg-brand-gold/10 rounded-full blur-sm pointer-events-none"></div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
+<!-- WhatsApp / Chat Icon -->
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"></path>
+</svg>
+</div>
+<div class="flex-1">
+<h4 class="font-serif font-semibold text-stone-900 text-xs">Looking for bespoke curation?</h4>
+<p class="text-[11px] text-stone-600 mt-0.5 leading-normal">
+              Need custom engraving, personalized ribbon text, or a specific ring size? Chat with our Atelier Concierge.
+            </p>
+<div class="mt-2 flex items-center gap-2">
+<a class="inline-flex items-center text-[11px] font-semibold text-emerald-800 bg-white/80 hover:bg-white px-2.5 py-1 rounded-md border border-brand-gold/40 shadow-xs transition" href="#">
+<span>Direct Stylist Chat</span>
+<svg class="w-3 h-3 ml-1 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<span class="text-[10px] text-stone-500 font-medium">Zero login needed</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- END: Atelier Concierge WhatsApp Banner -->
+</main>
+<!-- END: Main Scrollable Content Area -->
+<!-- BEGIN: Persistent Bottom Bag Bar (Ellee Storefront Standard) -->
+<footer class="bg-white border-t border-brand-border px-4 py-2.5 shadow-lg flex items-center justify-between z-20" data-purpose="bag-bar">
+<div>
+<div class="text-[9px] uppercase tracking-wider text-stone-400 font-bold">Bag Subtotal</div>
+<div class="font-serif text-sm font-bold text-stone-900">₦43,500<span class="text-xs font-normal text-stone-500">.00</span></div>
+</div>
+<button class="bg-brand-emerald hover:bg-brand-emerald-dark active:scale-[0.98] text-white px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 shadow-md transition-all">
+<span>View Bag &amp; Order</span>
+<span class="w-4 h-4 rounded-full bg-emerald-700/80 text-[10px] flex items-center justify-center font-bold">2</span>
+<svg class="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</button>
+</footer>
+<!-- END: Persistent Bottom Bag Bar -->
+<!-- BEGIN: iOS Home Indicator -->
+<div class="w-full pb-2 pt-1 flex justify-center bg-white select-none" data-purpose="ios-home-indicator">
+<div class="w-32 h-1 bg-stone-300 rounded-full"></div>
+</div>
+<!-- END: iOS Home Indicator -->
+</div>
+<!-- END: Mobile Device Frame Simulator -->
+</body></html>

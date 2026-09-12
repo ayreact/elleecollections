@@ -1,0 +1,20 @@
+{
+  "name": "Ellee Collections",
+  "short_name": "Ellee",
+  "description": "Discover luxury gift boxes, pearl earrings, and silk scarves — curated pieces that speak to your style.",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#032f25",
+  "background_color": "#032f25",
+  "display": "standalone"
+}

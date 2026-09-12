@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/* ===== Brand Design Tokens (Tailwind v4 @theme) ===== */
+@theme inline {
+  /* Brand Colors */
+  --color-brand-emerald: #064e3b;
+  --color-brand-deep: #043427;
+  --color-brand-accent: #059669;
+  --color-brand-gold: #c5a059;
+  --color-brand-goldlight: #dfc07f;
+  --color-brand-sand: #fcfbf7;
+  --color-brand-cream: #f8f5ee;
+
+  /* WhatsApp Green */
+  --color-whatsapp-500: #25D366;
+  --color-whatsapp-600: #20ba5a;
+
+  /* Typography */
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===== Root Variables ===== */
+:root {
+  --background: #faf8f5;
+  --foreground: #1c1917;
+}
+
+/* ===== Base Styles ===== */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: #064e3b;
+  color: #fef3c7;
+}
+
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1ede4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d6cebf;
+  border-radius: 9999px;
+}
+
+/* ===== Tap Highlight ===== */
+.tap-highlight-transparent {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== Hide Scrollbar (for pill strips) ===== */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ===== Animations ===== */
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes spin-luxury {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-drawer-in {
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-drawer-out {
+  animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-menu-in {
+  animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-menu-out {
+  animation: slideOutLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-sheet-in {
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-sheet-out {
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-backdrop-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-backdrop-out {
+  animation: fadeOut 0.25s ease forwards;
+}
+
+.spin-luxury {
+  animation: spin-luxury 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ===== Custom Scrollbar for drawers ===== */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(203, 195, 182, 0.4);
+  border-radius: 9999px;
+}
