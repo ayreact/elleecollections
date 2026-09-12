@@ -71,23 +71,21 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       <div className="p-6 flex-1 flex flex-col justify-between bg-white">
         <div>
-          <div className="h-4 mb-1">
-            {product.is_in_stock && (
-              <span className="inline-block text-[9px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
-                In Stock
-              </span>
-            )}
-          </div>
           <h3
             className="font-serif text-sm font-semibold text-stone-900 leading-snug line-clamp-2 h-[2.5rem]"
             title={product.title}
           >
             {product.title}
           </h3>
-          <div className="mt-1 flex items-baseline">
-            <span className="text-xs font-bold text-stone-900 font-sans">
+          <div className="mt-1.5 flex items-center justify-between gap-1">
+            <span className="text-[11px] font-bold text-stone-900 font-sans truncate">
               {formatCurrency(price)}
             </span>
+            {product.is_in_stock && (
+              <span className="shrink-0 text-[8px] font-bold text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded uppercase tracking-widest">
+                In Stock
+              </span>
+            )}
           </div>
         </div>
 

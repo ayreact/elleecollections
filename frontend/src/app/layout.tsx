@@ -33,6 +33,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://elleecollections.vercel.app"),
   title: "Ellee Collections — Trendy. Affordable. Always You.",
   description:
     "Discover luxury gift boxes, pearl earrings, and silk scarves — curated pieces that speak to your style. Delivered to your doorstep with seamless guest checkout.",
@@ -56,6 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ellee Collections",
     description: "Discover luxury gift boxes, pearl earrings, and silk scarves — curated pieces that speak to your style. Delivered to your doorstep with seamless guest checkout.",
+    images: ["https://ogimage.io/templates/brand?title=Ellee+Collections&subtitle=Trendy.+Affordable.+Always+You.&color=032F25&font=playfair-display"],
   },
   robots: {
     index: true,
