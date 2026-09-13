@@ -44,7 +44,7 @@ export async function getProducts(categorySlug?: string): Promise<Product[]> {
     }
     
     const data = await res.json();
-    return data.results; // Adhering to the TAD JSON response contract ({ count, results: [...] })
+    return data.results;
   } catch (error) {
     console.warn('Backend unavailable, falling back to mock data.', (error as Error).message);
     

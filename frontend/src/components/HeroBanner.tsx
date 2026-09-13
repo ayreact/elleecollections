@@ -2,7 +2,6 @@ export default function HeroBanner() {
   return (
     <section className="p-4">
       <div className="relative rounded-2xl overflow-hidden bg-stone-900 text-white shadow-md border border-stone-200/50">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt="Luxury curated gift hampers"
           className="w-full h-44 object-cover opacity-65 scale-100 hover:scale-105 transition-transform duration-700"

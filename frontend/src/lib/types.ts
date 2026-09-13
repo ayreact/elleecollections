@@ -1,11 +1,7 @@
-// Types matching Django API contract: GET /api/v1/products/
-
 export interface ProductImage {
   url: string;
   alt: string;
 }
-
-// Removed Variant interfaces as they are not in the TAD
 
 export interface Category {
   name: string;
@@ -17,7 +13,7 @@ export interface Product {
   title: string;
   slug: string;
   description: string;
-  base_price: string; // e.g. "15000.00"
+  base_price: string;
   category: Category;
   image_url: string;
   is_in_stock: boolean;

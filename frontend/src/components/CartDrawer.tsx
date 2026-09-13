@@ -67,7 +67,7 @@ export default function CartDrawer() {
           </button>
         </div>
 
-        {/* Guest Notice */}
+
         <div className="bg-stone-100/80 px-5 py-2 border-b border-stone-200/60 flex items-center justify-between text-xs text-stone-600 shrink-0">
           <span className="flex items-center space-x-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-700" />
@@ -139,7 +139,7 @@ export default function CartDrawer() {
         ) : (
           <>
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 custom-scrollbar">
-              {/* Item List */}
+
               <div className="space-y-3.5">
                 <p className="text-[11px] uppercase tracking-wider font-bold text-stone-600">
                   Selected Creations
@@ -202,7 +202,7 @@ export default function CartDrawer() {
                 ))}
               </div>
 
-              {/* Delivery Context */}
+
               <div className="p-4 bg-stone-100/90 rounded-2xl border border-stone-200 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-emerald-950 flex items-center gap-1.5">
@@ -289,7 +289,7 @@ export default function CartDrawer() {
                 </div>
               </div>
 
-              {/* WhatsApp CTA */}
+
               <button
                 className="w-full py-3.5 px-4 bg-[#25D366] hover:bg-[#20ba5a] active:scale-[0.99] text-white rounded-xl font-semibold shadow-[0_4px_16px_rgba(37,211,102,0.3)] flex items-center justify-center space-x-2.5 transition text-sm"
                 onClick={handleCheckout}

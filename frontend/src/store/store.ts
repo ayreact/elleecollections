@@ -32,11 +32,11 @@ interface StoreState {
   showWhatsAppLoading: () => void;
   hideWhatsAppLoading: () => void;
 
-  // Categories (Dynamically fetched)
+  // Categories
   categories: Category[];
   setCategories: (cats: Category[]) => void;
 
-  // Search Catalog Cache (Lazy Loaded)
+  // Search Catalog Cache
   cachedCatalog: Product[] | null;
   setCachedCatalog: (products: Product[] | null) => void;
 
@@ -48,7 +48,7 @@ interface StoreState {
 export const useStore = create<StoreState>()(
   persist(
     (set) => ({
-      // Cart state
+
       items: [],
 
       addItem: (item) =>
@@ -79,7 +79,7 @@ export const useStore = create<StoreState>()(
 
       clearCart: () => set({ items: [] }),
 
-      // UI state
+
       isCartOpen: false,
       openCart: () => set({ isCartOpen: true }),
       closeCart: () => set({ isCartOpen: false }),
@@ -103,15 +103,15 @@ export const useStore = create<StoreState>()(
       showWhatsAppLoading: () => set({ isWhatsAppLoading: true }),
       hideWhatsAppLoading: () => set({ isWhatsAppLoading: false }),
 
-      // Categories
+
       categories: [],
       setCategories: (cats) => set({ categories: cats }),
 
-      // Cached Catalog
+
       cachedCatalog: null,
       setCachedCatalog: (products) => set({ cachedCatalog: products }),
 
-      // Toast
+
       toast: { message: '', visible: false },
       showToast: (message) => {
         set({ toast: { message, visible: true } });
@@ -122,7 +122,7 @@ export const useStore = create<StoreState>()(
     }),
     {
       name: 'ellee-collections-cart',
-      partialize: (state) => ({ items: state.items }), // Only persist the cart items array
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

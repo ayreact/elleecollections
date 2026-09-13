@@ -40,5 +40,5 @@ export function formatWhatsAppPayload(
 }
 
 export function getWhatsAppUrl(payload: string): string {
-  return `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(payload)}`;
+  return `https://api.whatsapp.com/send?phone=${OWNER_PHONE}&text=${encodeURIComponent(payload)}`;
 }
