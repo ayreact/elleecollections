@@ -31,6 +31,7 @@ export interface CartItem {
   image: string;
   category?: string;
   variant?: string;
+  isAvailable?: boolean;
 }
 
 export interface FAQItem {

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore, useTotalItems, useSubtotal } from '@/store/store';
 import { formatCurrency, formatWhatsAppPayload, getWhatsAppUrl } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
+import { getProductsByIds } from '@/lib/api';
 
 export default function CartDrawer() {
   const isOpen = useStore((s) => s.isCartOpen);
@@ -11,6 +12,8 @@ export default function CartDrawer() {
   const items = useStore((s) => s.items);
   const updateQty = useStore((s) => s.updateQty);
   const removeItem = useStore((s) => s.removeItem);
+  const clearCart = useStore((s) => s.clearCart);
+  const updateItemsAvailability = useStore((s) => s.updateItemsAvailability);
   const showWhatsAppLoading = useStore((s) => s.showWhatsAppLoading);
   const hideWhatsAppLoading = useStore((s) => s.hideWhatsAppLoading);
   const totalItems = useTotalItems();
@@ -20,8 +23,30 @@ export default function CartDrawer() {
   const [city, setCity] = useState('');
   const [giftNote, setGiftNote] = useState('');
 
+  useEffect(() => {
+    if (isOpen && items.length > 0) {
+      const validateItems = async () => {
+        const productIds = items.map(i => i.id);
+        const liveProducts = await getProductsByIds(productIds);
+        
+        const statuses = items.map(item => {
+          const liveProduct = liveProducts.find(p => p.id === item.id);
+          const isAvailable = !!liveProduct && liveProduct.is_in_stock;
+          return { id: item.id, isAvailable };
+        });
+        
+        updateItemsAvailability(statuses);
+      };
+      
+      validateItems();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, items.length]);
+
   const handleCheckout = () => {
-    if (items.length === 0) return;
+    const availableItems = items.filter(i => i.isAvailable !== false);
+    if (availableItems.length === 0) return;
+    
     showWhatsAppLoading();
 
     trackEvent('whatsapp_checkout', {
@@ -32,13 +57,12 @@ export default function CartDrawer() {
       has_gift_note: !!giftNote
     });
 
-    const payload = formatWhatsAppPayload(items, name, city, giftNote);
+    const payload = formatWhatsAppPayload(availableItems, name, city, giftNote);
     const url = getWhatsAppUrl(payload);
 
-    setTimeout(() => {
-      hideWhatsAppLoading();
-      window.open(url, '_blank');
-    }, 2000);
+    // Fix for iOS devices blocking window.open in setTimeouts: use window.location.href directly
+    hideWhatsAppLoading();
+    window.location.href = url;
   };
 
   if (!isOpen) return null;
@@ -155,9 +179,14 @@ export default function CartDrawer() {
                 </p>
 
                 {items.map((item) => (
-                  <div key={item.id} className="p-3 bg-white rounded-2xl border border-stone-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] flex space-x-3.5 transition">
-                    <div className="w-20 h-20 rounded-xl overflow-hidden bg-stone-100 shrink-0 border border-stone-200/60">
+                  <div key={item.id} className={`p-3 bg-white rounded-2xl border border-stone-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] flex space-x-3.5 transition ${item.isAvailable === false ? 'opacity-60 grayscale-[0.5]' : ''}`}>
+                    <div className="w-20 h-20 rounded-xl overflow-hidden bg-stone-100 shrink-0 border border-stone-200/60 relative">
                       <img src={item.image} alt={item.title} className="w-full h-full object-cover object-center" />
+                      {item.isAvailable === false && (
+                        <div className="absolute inset-0 bg-stone-100/50 flex items-center justify-center">
+                          <span className="text-[10px] font-bold text-stone-600 bg-white/90 px-1.5 py-0.5 rounded uppercase tracking-wider backdrop-blur-sm">Sold Out</span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex-1 flex flex-col justify-between min-w-0">
@@ -188,7 +217,7 @@ export default function CartDrawer() {
                           {formatCurrency(item.price)}
                         </span>
 
-                        <div className="flex items-center bg-stone-100 rounded-lg p-0.5 border border-stone-200">
+                        <div className={`flex items-center bg-stone-100 rounded-lg p-0.5 border border-stone-200 ${item.isAvailable === false ? 'opacity-50 pointer-events-none' : ''}`}>
                           <button
                             className="w-6 h-6 rounded flex items-center justify-center text-stone-600 hover:bg-white text-xs font-bold active:scale-95 transition"
                             onClick={() => updateQty(item.id, -1)}
@@ -299,18 +328,32 @@ export default function CartDrawer() {
               </div>
 
 
-              <button
-                className="w-full py-3.5 px-4 bg-[#25D366] hover:bg-[#20ba5a] active:scale-[0.99] text-white rounded-xl font-semibold shadow-[0_4px_16px_rgba(37,211,102,0.3)] flex items-center justify-center space-x-2.5 transition text-sm"
-                onClick={handleCheckout}
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm.01 17.89c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.12 8.12 0 01-1.25-4.32c0-4.51 3.67-8.18 8.18-8.18 2.19 0 4.24.85 5.79 2.4 1.55 1.55 2.4 3.6 2.4 5.79 0 4.51-3.67 8.17-8.18 8.17z" />
-                </svg>
-                <span>Send Order via WhatsApp</span>
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
+              <div className="flex gap-2">
+                <button
+                  className="w-full py-3.5 px-4 bg-[#25D366] hover:bg-[#20ba5a] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-xl font-semibold shadow-[0_4px_16px_rgba(37,211,102,0.3)] flex items-center justify-center space-x-2.5 transition text-sm"
+                  onClick={handleCheckout}
+                  disabled={items.filter(i => i.isAvailable !== false).length === 0}
+                >
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm.01 17.89c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.12 8.12 0 01-1.25-4.32c0-4.51 3.67-8.18 8.18-8.18 2.19 0 4.24.85 5.79 2.4 1.55 1.55 2.4 3.6 2.4 5.79 0 4.51-3.67 8.17-8.18 8.17z" />
+                  </svg>
+                  <span>Send Order via WhatsApp</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+
+                <button
+                  className="w-12 shrink-0 py-3.5 flex items-center justify-center bg-stone-100 hover:bg-stone-200 text-stone-500 rounded-xl transition"
+                  onClick={clearCart}
+                  title="Clear Bag"
+                  aria-label="Clear Bag"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
 
               <p className="text-[10px] text-center text-stone-500">
                 Payment details shared securely via chat
