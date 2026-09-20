@@ -37,6 +37,12 @@ export const metadata: Metadata = {
   title: "Ellee Collections — Trendy. Affordable. Always You.",
   description:
     "Discover luxury gift boxes, pearl earrings, and silk scarves — curated pieces that speak to your style. Delivered to your doorstep with seamless guest checkout.",
+  authors: [{ name: "Uchendu Kelechi Emmanuella" }],
+  creator: "Uchendu Kelechi Emmanuella",
+  keywords: ["luxury gift boxes", "pearl earrings", "silk scarves", "Ellee Collections", "fashion accessories", "Nigeria"],
+  alternates: {
+    canonical: "https://elleecollections.vercel.app",
+  },
   openGraph: {
     title: "Ellee Collections",
     description: "Discover luxury gift boxes, pearl earrings, and silk scarves — curated pieces that speak to your style. Delivered to your doorstep with seamless guest checkout.",
@@ -78,6 +84,34 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const categories = await getCategories();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Ellee Collections",
+    url: "https://elleecollections.vercel.app/",
+    author: {
+      "@type": "Person",
+      name: "Uchendu Kelechi Emmanuella"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Ellee Collections",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://elleecollections.vercel.app/og-image.png"
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+2348123757600",
+        contactType: "customer service",
+        email: "uchendukelechi20@gmail.com"
+      },
+      sameAs: [
+        "https://www.tiktok.com/@shopelleecollections01"
+      ]
+    }
+  };
+
   return (
     <html
       lang="en"
@@ -85,6 +119,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-[#faf8f5] text-stone-800 font-sans antialiased selection:bg-emerald-900 selection:text-amber-100">
         <StoreInitializer categories={categories} />
