@@ -31,12 +31,12 @@ export default function ProductModal() {
 
   const handleAddToCart = () => {
     addItem({
-      id: product.id,
+      id: product.id as string,
       title: product.title,
       price: parseFloat(product.base_price),
       qty: 1,
       image: product.image_url || '',
-      category: product.category?.name,
+      category: product.category?.name || 'Uncategorized',
     });
     showToast(`Added "${product.title}" to bag`);
     closeProductModal();
@@ -84,7 +84,7 @@ export default function ProductModal() {
             />
             
             <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
-              {product.category.name === 'Gift Box' && (
+              {product.category?.name === 'Gift Box' && (
                 <span className="px-2.5 py-1 bg-emerald-900/90 backdrop-blur-md text-[#dfc07f] rounded-full text-[10px] font-semibold tracking-wide shadow-sm">
                   Velvet &amp; Brass
                 </span>
@@ -152,7 +152,7 @@ export default function ProductModal() {
             <div className="flex items-center justify-between bg-stone-100 p-2 rounded-xl border border-stone-200 shadow-inner">
               <button
                 className="w-14 h-10 rounded-lg bg-white border border-stone-200 flex items-center justify-center text-stone-600 hover:text-emerald-800 hover:border-emerald-800 transition shadow-sm active:scale-95"
-                onClick={() => updateQty(product.id, -1)}
+                onClick={() => updateQty(product.id as string, -1)}
                 aria-label="Decrease quantity"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
@@ -163,7 +163,7 @@ export default function ProductModal() {
               </div>
               <button
                 className="w-14 h-10 rounded-lg bg-emerald-800 border border-emerald-800 flex items-center justify-center text-white hover:bg-emerald-900 transition shadow-sm active:scale-95"
-                onClick={() => updateQty(product.id, 1)}
+                onClick={() => updateQty(product.id as string, 1)}
                 aria-label="Increase quantity"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>

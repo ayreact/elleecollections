@@ -30,12 +30,12 @@ export default function ProductCard({ product }: ProductCardProps) {
     
     setIsAdding(true);
     addItem({
-      id: product.id,
+      id: product.id as string,
       title: product.title,
       price,
       qty: 1,
       image: product.image_url || '',
-      category: product.category.name,
+      category: product.category?.name || 'Uncategorized',
     });
     showToast(`Added "${product.title}" to bag`);
     
@@ -65,7 +65,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         )}
         <span className="absolute top-2 left-2 bg-[#faf8f5]/90 backdrop-blur-sm text-emerald-950 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs">
-          {product.category.name}
+          {product.category?.name || 'Uncategorized'}
         </span>
       </div>
 
@@ -97,7 +97,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             >
               <button
                 className="w-10 h-full flex items-center justify-center text-stone-600 hover:bg-white hover:text-emerald-800 transition rounded-l-lg active:scale-95"
-                onClick={() => updateQty(product.id, -1)}
+                onClick={() => updateQty(product.id as string, -1)}
                 aria-label="Decrease quantity"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
@@ -107,7 +107,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               </div>
               <button
                 className="w-10 h-full flex items-center justify-center text-stone-600 hover:bg-emerald-800 hover:text-white transition rounded-r-lg active:scale-95"
-                onClick={() => updateQty(product.id, 1)}
+                onClick={() => updateQty(product.id as string, 1)}
                 aria-label="Increase quantity"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
