@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useStore, useTotalItems, useSubtotal } from '@/store/store';
 import { formatCurrency, formatWhatsAppPayload, getWhatsAppUrl } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 export default function CartDrawer() {
   const isOpen = useStore((s) => s.isCartOpen);
@@ -22,6 +23,14 @@ export default function CartDrawer() {
   const handleCheckout = () => {
     if (items.length === 0) return;
     showWhatsAppLoading();
+
+    trackEvent('whatsapp_checkout', {
+      total_items: totalItems,
+      subtotal: subtotal,
+      name,
+      city,
+      has_gift_note: !!giftNote
+    });
 
     const payload = formatWhatsAppPayload(items, name, city, giftNote);
     const url = getWhatsAppUrl(payload);

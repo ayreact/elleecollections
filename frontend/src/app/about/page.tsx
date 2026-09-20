@@ -36,7 +36,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-stone-900/40" />
         <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
           <p className="font-serif italic text-2xl text-white font-medium leading-snug drop-shadow-md">
-            &quot;Curating the intersection of heritage craftsmanship and modern elegance.&quot;
+            &quot;Curating a diverse world of premium products for every lifestyle.&quot;
           </p>
         </div>
       </div>
@@ -44,13 +44,13 @@ export default function AboutPage() {
       <div className="px-5 py-8 space-y-10">
         
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl font-bold text-stone-900">The Origin Story</h2>
+          <h2 className="font-serif text-2xl font-bold text-stone-900">Who We Are</h2>
           <div className="w-10 h-[2px] bg-[#c5a059]" />
           <p className="text-sm text-stone-600 leading-relaxed pt-2">
-            Ellee Collections was born from a desire to elevate the art of gifting. We noticed a void in the market: where were the gifts that felt as momentous as the occasions they celebrated?
+            Ellee Collections is your premier destination for a diverse array of premium products. We believe in providing our customers with an extensive selection of items that cater to every taste, style, and occasion.
           </p>
           <p className="text-sm text-stone-600 leading-relaxed">
-            Operating from our atelier, we source raw materials — heavy vermeil, freshwater baroque pearls, and 22-momme mulberry silk — to assemble collections that are designed to be kept, worn, and cherished for generations.
+            From everyday essentials to unique finds, our collections are carefully curated to ensure you always find exactly what you're looking for, no matter the category.
           </p>
         </section>
 
@@ -85,8 +85,8 @@ export default function AboutPage() {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
               </div>
               <div>
-                <h4 className="font-serif font-bold text-stone-900">Dedicated Craftsmanship</h4>
-                <p className="text-xs text-stone-500 mt-1 leading-relaxed">We take pride in the intricate details. From hand-rolled hems to artisan-hammered surfaces, our craft is a labor of genuine love.</p>
+                <h4 className="font-serif font-bold text-stone-900">Endless Variety</h4>
+                <p className="text-xs text-stone-500 mt-1 leading-relaxed">We take pride in our diverse catalog. Whether you're shopping for yourself or searching for the perfect gift, our wide range of products ensures there's something for everyone.</p>
               </div>
             </div>
           </div>

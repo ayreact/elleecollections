@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect } from 'react';
 import { useStore } from '@/store/store';
 import { Category } from '@/lib/types';
 
@@ -9,12 +9,9 @@ interface Props {
 }
 
 export default function StoreInitializer({ categories }: Props) {
-  const initialized = useRef<boolean | null>(null);
-
-  if (initialized.current == null) {
+  useEffect(() => {
     useStore.setState({ categories });
-    initialized.current = true;
-  }
+  }, [categories]);
 
   return null;
 }

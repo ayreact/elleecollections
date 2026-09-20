@@ -30,12 +30,12 @@ export default function ProductCard({ product }: ProductCardProps) {
     
     setIsAdding(true);
     addItem({
-      id: product.id,
+      id: product.id as string,
       title: product.title,
       price,
       qty: 1,
       image: product.image_url || '',
-      category: product.category.name,
+      category: product.category?.name || 'Uncategorized',
     });
     showToast(`Added "${product.title}" to bag`);
     
@@ -65,31 +65,31 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         )}
         <span className="absolute top-2 left-2 bg-[#faf8f5]/90 backdrop-blur-sm text-emerald-950 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs">
-          {product.category.name}
+          {product.category?.name || 'Uncategorized'}
         </span>
       </div>
 
-      <div className="p-6 flex-1 flex flex-col justify-between bg-white">
+      <div className="p-3.5 flex-1 flex flex-col justify-between bg-white">
         <div>
           <h3
-            className="font-serif text-sm font-semibold text-stone-900 leading-snug line-clamp-2 h-[2.5rem]"
+            className="font-serif text-[13px] font-semibold text-stone-900 leading-tight line-clamp-2 mb-0.5"
             title={product.title}
           >
             {product.title}
           </h3>
-          <div className="mt-1.5 flex items-center justify-between gap-1">
-            <span className="text-[11px] font-bold text-stone-900 font-sans truncate">
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-[12px] font-bold text-stone-900 font-sans truncate">
               {formatCurrency(price)}
             </span>
             {product.is_in_stock && (
-              <span className="shrink-0 text-[8px] font-bold text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded uppercase tracking-widest">
+              <span className="shrink-0 text-[9px] font-bold text-emerald-700 bg-emerald-50/80 px-1.5 py-0.5 rounded uppercase tracking-widest border border-emerald-100">
                 In Stock
               </span>
             )}
           </div>
         </div>
 
-        <div className="mt-3 h-8">
+        <div className="mt-3.5 h-8">
           {isInCart && cartItem ? (
             <div 
               className="w-full h-full flex items-center justify-between bg-stone-100 rounded-lg border border-stone-200/90 shadow-sm"
@@ -97,7 +97,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             >
               <button
                 className="w-10 h-full flex items-center justify-center text-stone-600 hover:bg-white hover:text-emerald-800 transition rounded-l-lg active:scale-95"
-                onClick={() => updateQty(product.id, -1)}
+                onClick={() => updateQty(product.id as string, -1)}
                 aria-label="Decrease quantity"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
@@ -107,7 +107,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               </div>
               <button
                 className="w-10 h-full flex items-center justify-center text-stone-600 hover:bg-emerald-800 hover:text-white transition rounded-r-lg active:scale-95"
-                onClick={() => updateQty(product.id, 1)}
+                onClick={() => updateQty(product.id as string, 1)}
                 aria-label="Increase quantity"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
@@ -115,21 +115,21 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           ) : (
             <button
-              className="w-full h-full bg-emerald-900 hover:bg-emerald-800 active:bg-emerald-950 disabled:opacity-80 disabled:cursor-wait text-white rounded-lg text-xs font-medium tracking-wide flex items-center justify-center space-x-1.5 transition-colors tap-highlight-transparent shadow-xs"
+              className={`w-full h-full ${!product.is_in_stock ? 'bg-stone-200 text-stone-500 cursor-not-allowed' : 'bg-emerald-900 hover:bg-emerald-800 active:bg-emerald-950 text-white disabled:opacity-80 disabled:cursor-wait'} rounded-lg text-xs font-medium tracking-wide flex items-center justify-center space-x-1.5 transition-colors tap-highlight-transparent shadow-xs`}
               onClick={handleAddToCart}
-              disabled={isAdding}
+              disabled={isAdding || !product.is_in_stock}
             >
               {isAdding ? (
                 <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-              ) : (
+              ) : product.is_in_stock ? (
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M12 4v16m8-8H4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                 </svg>
-              )}
-              <span>{isAdding ? 'Adding...' : 'Add to Bag'}</span>
+              ) : null}
+              <span>{!product.is_in_stock ? 'Out of Stock' : isAdding ? 'Adding...' : 'Add to Bag'}</span>
             </button>
           )}
         </div>

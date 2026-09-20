@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Fuse from 'fuse.js';
 import { useDebounce } from '@/lib/useDebounce';
 import { OWNER_PHONE } from '@/lib/utils';
+import EmptyState from './EmptyState';
 
 function SearchProductCard({ product, onClick, isInCart }: { product: Product, onClick: () => void, isInCart: boolean }) {
   const [imgSrc, setImgSrc] = useState(product.image_url || '/placeholder.jpg');
@@ -300,7 +301,33 @@ export default function SearchOverlay() {
                 </div>
                 
                 <h3 className="font-serif text-lg font-semibold text-stone-900 tracking-tight mb-3 border-b border-stone-200 pb-2">Trending Now</h3>
-                <section className="space-y-3 pb-6">
+                {trendingProducts.length > 0 ? (
+                  <section className="space-y-3 pb-6">
+                    {trendingProducts.map((product) => (
+                      <SearchProductCard
+                        key={product.id}
+                        product={product}
+                        isInCart={items.some((i) => i.id === product.id)}
+                        onClick={() => {
+                          openProductModal(product);
+                          closeSearch();
+                        }}
+                      />
+                    ))}
+                  </section>
+                ) : (
+                  <p className="text-sm text-stone-500 text-center py-4">No trending items available.</p>
+                )}
+              </div>
+            )}
+          </>
+        )}
+
+        {!isLoading && !isError && cachedCatalog && !debouncedQuery && (
+          <div className="py-6 animate-backdrop-in">
+             <h3 className="font-serif text-lg font-semibold text-stone-900 tracking-tight mb-3 border-b border-stone-200 pb-2">Discover New Arrivals</h3>
+             {trendingProducts.length > 0 ? (
+               <section className="space-y-3 pb-6">
                   {trendingProducts.map((product) => (
                     <SearchProductCard
                       key={product.id}
@@ -313,27 +340,12 @@ export default function SearchOverlay() {
                     />
                   ))}
                 </section>
-              </div>
-            )}
-          </>
-        )}
-
-        {!isLoading && !isError && cachedCatalog && !debouncedQuery && (
-          <div className="py-6 animate-backdrop-in">
-             <h3 className="font-serif text-lg font-semibold text-stone-900 tracking-tight mb-3 border-b border-stone-200 pb-2">Discover New Arrivals</h3>
-             <section className="space-y-3 pb-6">
-                {trendingProducts.map((product) => (
-                  <SearchProductCard
-                    key={product.id}
-                    product={product}
-                    isInCart={items.some((i) => i.id === product.id)}
-                    onClick={() => {
-                      openProductModal(product);
-                      closeSearch();
-                    }}
-                  />
-                ))}
-              </section>
+             ) : (
+                <EmptyState 
+                  title="Collections arriving soon" 
+                  message="Our artisans are preparing new exclusive pieces. Check back shortly to discover our latest curated selections." 
+                />
+             )}
           </div>
         )}
 
