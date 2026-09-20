@@ -9,6 +9,7 @@ interface StoreState {
   removeItem: (id: string) => void;
   updateQty: (id: string, delta: number) => void;
   clearCart: () => void;
+  updateItemsAvailability: (statuses: { id: string; isAvailable: boolean }[]) => void;
 
   // UI Toggles
   isCartOpen: boolean;
@@ -79,6 +80,18 @@ export const useStore = create<StoreState>()(
 
       clearCart: () => set({ items: [] }),
 
+      updateItemsAvailability: (statuses) =>
+        set((state) => {
+          const updated = state.items.map((item) => {
+            const status = statuses.find((s) => s.id === item.id);
+            if (status) {
+              return { ...item, isAvailable: status.isAvailable };
+            }
+            return item;
+          });
+          return { items: updated };
+        }),
+
 
       isCartOpen: false,
       openCart: () => set({ isCartOpen: true }),
@@ -129,9 +142,15 @@ export const useStore = create<StoreState>()(
 
 // Selectors
 export const useTotalItems = () =>
-  useStore((state) => state.items.reduce((acc, i) => acc + i.qty, 0));
+  useStore((state) =>
+    state.items
+      .filter((i) => i.isAvailable !== false)
+      .reduce((acc, i) => acc + i.qty, 0)
+  );
 
 export const useSubtotal = () =>
   useStore((state) =>
-    state.items.reduce((acc, i) => acc + i.price * i.qty, 0)
+    state.items
+      .filter((i) => i.isAvailable !== false)
+      .reduce((acc, i) => acc + i.price * i.qty, 0)
   );

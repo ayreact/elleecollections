@@ -148,7 +148,7 @@ export default function ProductModal() {
         </div>
 
         <div className="p-5 border-t border-stone-200 bg-white/95 backdrop-blur-md shrink-0 space-y-2">
-          {isInCart && cartItem ? (
+          {isInCart && cartItem && product.is_in_stock ? (
             <div className="flex items-center justify-between bg-stone-100 p-2 rounded-xl border border-stone-200 shadow-inner">
               <button
                 className="w-14 h-10 rounded-lg bg-white border border-stone-200 flex items-center justify-center text-stone-600 hover:text-emerald-800 hover:border-emerald-800 transition shadow-sm active:scale-95"

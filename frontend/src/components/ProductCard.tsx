@@ -90,7 +90,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="mt-3.5 h-8">
-          {isInCart && cartItem ? (
+          {isInCart && cartItem && product.is_in_stock ? (
             <div 
               className="w-full h-full flex items-center justify-between bg-stone-100 rounded-lg border border-stone-200/90 shadow-sm"
               onClick={(e) => e.stopPropagation()}

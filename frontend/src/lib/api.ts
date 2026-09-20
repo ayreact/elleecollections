@@ -38,3 +38,19 @@ export async function getProducts(categorySlug?: string): Promise<Product[]> {
   const products = data.filter((p: any) => p.category !== null) as Product[];
   return products;
 }
+
+export async function getProductsByIds(ids: string[]): Promise<Product[]> {
+  if (!ids || ids.length === 0) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('products')
+    .select('*, category:categories(*)')
+    .in('id', ids);
+    
+  if (error) {
+    console.error('Error fetching products by ids:', error);
+    return [];
+  }
+  
+  return data as Product[];
+}

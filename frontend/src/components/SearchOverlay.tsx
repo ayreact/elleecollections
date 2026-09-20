@@ -50,7 +50,7 @@ function SearchProductCard({ product, onClick, isInCart }: { product: Product, o
           <span className="font-serif font-bold text-stone-900 text-xs tracking-tight">
             ₦{Number(product.base_price).toLocaleString()}
           </span>
-          {isInCart ? (
+          {isInCart && product.is_in_stock ? (
             <div className="bg-stone-100 border border-stone-200 text-emerald-800 text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
               <span>In Bag</span>
