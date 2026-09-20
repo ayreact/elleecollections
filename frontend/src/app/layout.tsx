@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -123,6 +124,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-MHD3XDKGF9" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-MHD3XDKGF9');
+          `}
+        </Script>
       </head>
       <body className="min-h-full flex flex-col bg-[#faf8f5] text-stone-800 font-sans antialiased selection:bg-emerald-900 selection:text-amber-100">
         <StoreInitializer categories={categories} />
