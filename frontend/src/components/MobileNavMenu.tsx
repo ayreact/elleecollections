@@ -66,7 +66,7 @@ export default function MobileNavMenu() {
               Home
             </span>
             <span className="text-xs text-stone-400 group-hover:text-emerald-800 font-sans tracking-wide">
-              01
+              Howdy!
             </span>
           </Link>
 

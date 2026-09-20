@@ -3,19 +3,50 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { OWNER_PHONE } from '@/lib/utils';
+import { createClient } from '@/utils/supabase/client';
 
 export default function ContactPage() {
   const router = useRouter();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  
+  const [name, setName] = useState('');
+  const [contactInfo, setContactInfo] = useState('');
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const supabase = createClient();
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim() || !contactInfo.trim() || !message.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from('messages').insert([
+        { name, contact_info: contactInfo, message }
+      ]);
+      if (error) throw error;
+      setSuccess(true);
+      setName('');
+      setContactInfo('');
+      setMessage('');
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (err) {
+      console.error('Error sending message', err);
+      alert('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   const faqs = [
     {
       q: "How long does delivery take?",
-      a: "Orders within Lagos are dispatched same-day via verified courier if placed before 2 PM WAT. Nationwide deliveries take 48-72 hours via DHL."
+      a: "Orders within Lagos are dispatched same-day via verified courier if placed before 2 PM WAT. Nationwide deliveries will vary."
     },
     {
       q: "Do you offer international shipping?",
-      a: "Yes, we ship globally via DHL Express. International shipping rates and times are calculated directly with your concierge during checkout."
+      a: "At the moment, we only ship within Nigeria, but we are working on expanding our delivery network to include international destinations very soon!"
     },
     {
       q: "Can I include a handwritten note?",
@@ -85,6 +116,59 @@ export default function ContactPage() {
           </div>
         </section>
 
+        <section className="bg-white rounded-2xl p-6 border border-stone-200/80 shadow-sm">
+          <h3 className="font-serif text-lg font-bold text-stone-900 mb-4">Drop us a line</h3>
+          {success ? (
+            <div className="bg-emerald-50 text-emerald-900 p-4 rounded-xl text-sm font-medium flex flex-col items-center justify-center gap-2 text-center border border-emerald-100">
+              <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              Message sent successfully! Our concierge will get back to you shortly.
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Name</label>
+                <input 
+                  type="text" 
+                  value={name} 
+                  onChange={(e) => setName(e.target.value)} 
+                  required 
+                  className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 transition" 
+                  placeholder="Your full name"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Email or Phone Number</label>
+                <input 
+                  type="text" 
+                  value={contactInfo} 
+                  onChange={(e) => setContactInfo(e.target.value)} 
+                  required 
+                  className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 transition" 
+                  placeholder="How can we reach you?"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Message</label>
+                <textarea 
+                  value={message} 
+                  onChange={(e) => setMessage(e.target.value)} 
+                  required 
+                  rows={4}
+                  className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 transition resize-none" 
+                  placeholder="How can we assist you today?"
+                ></textarea>
+              </div>
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-3.5 rounded-xl text-sm transition-colors disabled:opacity-70 flex justify-center items-center gap-2 shadow-md"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </form>
+          )}
+        </section>
+
         <section className="bg-stone-900 rounded-2xl p-6 text-stone-100 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
@@ -94,12 +178,8 @@ export default function ContactPage() {
           
           <div className="space-y-2 text-xs relative z-10">
             <div className="flex justify-between border-b border-stone-700 pb-2">
-              <span className="text-stone-400">Monday - Friday</span>
-              <span className="font-medium text-amber-100">9:00 AM – 7:00 PM (WAT)</span>
-            </div>
-            <div className="flex justify-between border-b border-stone-700 py-2">
-              <span className="text-stone-400">Saturday</span>
-              <span className="font-medium text-amber-100">10:00 AM – 5:00 PM (WAT)</span>
+              <span className="text-stone-400">Monday - Saturday</span>
+              <span className="font-medium text-amber-100">Open 24 Hours</span>
             </div>
             <div className="flex justify-between pt-2">
               <span className="text-stone-400">Sunday</span>

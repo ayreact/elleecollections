@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: "Ellee Collections",
     images: [
       {
-        url: "https://ogimage.io/templates/brand?title=Ellee+Collections&subtitle=Trendy.+Affordable.+Always+You.&color=032F25&font=playfair-display",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Ellee Collections",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ellee Collections",
     description: "Discover luxury gift boxes, pearl earrings, and silk scarves — curated pieces that speak to your style. Delivered to your doorstep with seamless guest checkout.",
-    images: ["https://ogimage.io/templates/brand?title=Ellee+Collections&subtitle=Trendy.+Affordable.+Always+You.&color=032F25&font=playfair-display"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -83,6 +83,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang="en"
       className={`${playfair.variable} ${jakarta.variable} h-full`}
     >
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+      </head>
       <body className="min-h-full flex flex-col bg-[#faf8f5] text-stone-800 font-sans antialiased selection:bg-emerald-900 selection:text-amber-100">
         <StoreInitializer categories={categories} />
         <div className="w-full max-w-[440px] min-h-screen mx-auto bg-[#faf8f5] relative flex flex-col border-x border-stone-200/80 overflow-x-hidden shadow-2xl">

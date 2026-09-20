@@ -2,7 +2,8 @@
 
 import { useStore } from '@/store/store';
 import { formatCurrency } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { trackEvent } from '@/lib/analytics';
 
 export default function ProductModal() {
   const isOpen = useStore((s) => s.isProductModalOpen);
@@ -12,6 +13,16 @@ export default function ProductModal() {
   const items = useStore((s) => s.items);
   const updateQty = useStore((s) => s.updateQty);
   const showToast = useStore((s) => s.showToast);
+
+  useEffect(() => {
+    if (isOpen && product) {
+      trackEvent('product_view', {
+        product_id: product.id,
+        product_title: product.title,
+        category: product.category?.name
+      });
+    }
+  }, [isOpen, product]);
 
   if (!isOpen || !product) return null;
 
@@ -160,16 +171,19 @@ export default function ProductModal() {
             </div>
           ) : (
             <button
-              className="w-full py-3.5 px-4 bg-emerald-900 hover:bg-emerald-800 active:scale-[0.99] text-white rounded-xl font-semibold shadow-[0_6px_20px_rgba(6,78,59,0.28)] flex items-center justify-between transition text-sm"
+              className={`w-full py-3.5 px-4 ${!product.is_in_stock ? 'bg-stone-200 text-stone-500 cursor-not-allowed shadow-none' : 'bg-emerald-900 hover:bg-emerald-800 active:scale-[0.99] text-white shadow-[0_6px_20px_rgba(6,78,59,0.28)]'} rounded-xl font-semibold flex items-center justify-between transition text-sm`}
               onClick={handleAddToCart}
+              disabled={!product.is_in_stock}
             >
               <div className="flex items-center space-x-2">
-                <svg className="w-5 h-5 text-[#dfc07f]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                <span className="tracking-wide">Add to Bag</span>
+                {product.is_in_stock && (
+                  <svg className="w-5 h-5 text-[#dfc07f]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                )}
+                <span className="tracking-wide">{!product.is_in_stock ? 'Out of Stock' : 'Add to Bag'}</span>
               </div>
-              <span className="font-serif text-base font-bold text-[#dfc07f]">
+              <span className={`font-serif text-base font-bold ${!product.is_in_stock ? 'text-stone-500' : 'text-[#dfc07f]'}`}>
                 {formatCurrency(price)}
               </span>
             </button>
