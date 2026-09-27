@@ -31,10 +31,13 @@ export default function ErrorBoundary({
       </div>
 
       <button
-        onClick={() => reset()}
+        onClick={() => {
+          reset();
+          window.location.reload();
+        }}
         className="px-6 py-2.5 bg-emerald-900 hover:bg-emerald-800 active:scale-95 text-white text-xs font-semibold tracking-wide rounded-xl transition-all shadow-md"
       >
-        Try Again
+        Tap to Reload
       </button>
     </div>
   );

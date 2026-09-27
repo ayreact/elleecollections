@@ -35,7 +35,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 mx-8">
         <div className="p-8 sm:p-10">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-serif text-gray-900 tracking-tight">Ellee Admin</h1>

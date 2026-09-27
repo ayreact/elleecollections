@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { useStore } from '@/store/store';
-import { getProducts } from '@/lib/api';
+import { getProducts, getDiverseRecentProducts } from '@/lib/api';
 import { Product } from '@/lib/types';
 import Image from 'next/image';
 import Fuse from 'fuse.js';
@@ -109,6 +109,7 @@ export default function SearchOverlay() {
   
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
   
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -116,9 +117,14 @@ export default function SearchOverlay() {
     if (isSearchOpen && cachedCatalog === null && !isLoading) {
       setIsLoading(true);
       setIsError(false);
-      getProducts()
-        .then((data) => {
-          setCachedCatalog(data);
+      
+      Promise.all([
+        getProducts(undefined, 0, 99),
+        getDiverseRecentProducts()
+      ])
+        .then(([catalogData, trendingData]) => {
+          setCachedCatalog(catalogData);
+          setTrendingProducts(trendingData);
         })
         .catch((err) => {
           console.error(err);
@@ -161,10 +167,7 @@ export default function SearchOverlay() {
     return fuse.search(debouncedQuery).map(result => result.item);
   }, [debouncedQuery, cachedCatalog, fuse]);
 
-  const trendingProducts = useMemo(() => {
-    if (!cachedCatalog) return [];
-    return cachedCatalog.slice(0, 3);
-  }, [cachedCatalog]);
+
 
   const retryFetch = () => {
     setCachedCatalog([]); 
