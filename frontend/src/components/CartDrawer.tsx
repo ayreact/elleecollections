@@ -131,7 +131,7 @@ export default function CartDrawer() {
                 Your bag is empty
               </h3>
               <p className="text-xs text-stone-500 max-w-[240px] leading-relaxed mb-6">
-                Indulge in our bespoke velvet keepsake boxes, handcrafted jewelry, and pure mulberry silk adornments.
+                Indulge in our bespoke gift boxes, beautiful jewelry, and luxury accessories.
               </p>
 
               <div className="w-full pt-4 pb-2 border-t border-dashed border-stone-200 mb-6">
@@ -141,7 +141,7 @@ export default function CartDrawer() {
                 <div className="flex flex-wrap gap-2 justify-center">
                   <span className="text-xs px-3 py-1 bg-white border border-stone-200/80 rounded-full text-stone-700 shadow-sm">Gift Boxes</span>
                   <span className="text-xs px-3 py-1 bg-white border border-stone-200/80 rounded-full text-stone-700 shadow-sm">Fine Jewelry</span>
-                  <span className="text-xs px-3 py-1 bg-white border border-stone-200/80 rounded-full text-stone-700 shadow-sm">Silk Adornments</span>
+                  <span className="text-xs px-3 py-1 bg-white border border-stone-200/80 rounded-full text-stone-700 shadow-sm">Luxury Touch</span>
                 </div>
               </div>
 

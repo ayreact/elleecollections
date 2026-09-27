@@ -149,11 +149,11 @@ export default function AdminDashboard() {
               </div>
               <div className="flex items-baseline gap-1">
                 <span className="font-headline-md-mobile text-headline-md-mobile text-on-surface tracking-tight">{categories.length}</span>
-                <span className="font-body-sm text-body-sm text-on-surface-variant">Active</span>
+                <span className="font-body-sm text-body-sm text-on-surface-variant">Total</span>
               </div>
               <div className="flex items-center gap-1 mt-space-2xs text-secondary-container font-body-sm text-body-sm">
                 <span className="material-symbols-outlined text-[14px]">check_circle</span>
-                <span className="text-on-surface">All available</span>
+                <span className="text-on-surface">{new Set(products.map(p => p.category_id).filter(Boolean)).size} available</span>
               </div>
             </div>
           </div>

@@ -26,7 +26,11 @@ export default function Footer() {
         </a>
       </div>
       
-      <div className="flex items-center justify-center space-x-2 mt-6 text-[10px] text-stone-400">
+      <div className="flex items-center justify-center space-x-4 mt-4 text-[11px] text-stone-500">
+        <a href="/terms" className="hover:text-emerald-800 transition">Terms of Service</a>
+        <a href="/privacy" className="hover:text-emerald-800 transition">Privacy Policy</a>
+      </div>
+      <div className="flex items-center justify-center space-x-2 mt-2 text-[10px] text-stone-400">
         <span>© {new Date().getFullYear()} Ellee Collections</span>
       </div>
     </footer>
